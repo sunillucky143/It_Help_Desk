@@ -35,8 +35,6 @@ The Admin Portal is a comprehensive management interface for the URackIT IT Help
 - **Real-time Database Integration** via specialized agents
 - **Session Management** with conversation history
 - **Cost-Effective**: Uses GPT-4o-mini ($0.001-0.003 per conversation)
-- 📖 See [MULTI_AGENT_CHATBOT.md](MULTI_AGENT_CHATBOT.md) for full documentation
-- 🚀 See [CHATBOT_SETUP.md](CHATBOT_SETUP.md) for quick setup
 
 ### 2. Dashboard Home
 - KPI Cards showing critical metrics
@@ -228,8 +226,6 @@ SUPABASE_ANON_KEY=your-supabase-anon-key
 OPENAI_API_KEY=sk-your-openai-api-key
 ```
 
-📖 See [SUPABASE_SETUP.md](SUPABASE_SETUP.md) for Supabase integration details
-📖 See [CHATBOT_SETUP.md](CHATBOT_SETUP.md) for chatbot setup
 
 ## Database Integration
 
@@ -240,7 +236,6 @@ OPENAI_API_KEY=sk-your-openai-api-key
 - Metadata tables for lookups (statuses, priorities, manufacturers, etc.)
 - Complex joins for related data
 
-📖 See [SUPABASE_SETUP.md](SUPABASE_SETUP.md) for setup instructions
 
 ## Key Features Implementation
 
