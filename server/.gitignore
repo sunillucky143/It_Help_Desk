@@ -1,0 +1,21 @@
+node_modules
+
+.DS_Store
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables (CRITICAL)
+.env
+*/.env
+.env.local
+.env.*.local
+
+# Build Outputs
+dist/
+build/
+
+# System Files
+.DS_Store
+logs/
+*.log
