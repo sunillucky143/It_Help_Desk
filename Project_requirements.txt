@@ -1,0 +1,91 @@
+Project Requirements Document (PRD): Admin Portal
+System: IT Help Desk Management (Multi-Agent)
+
+Portal: Admin / Super-Admin
+
+Tech Stack: MERN (with PostgreSQL via Sequelize/TypeORM)
+
+1. Functional Requirements
+1.1 Tenant & Organization Management
+The Admin must be able to manage the multi-tenant architecture to ensure data isolation.
+
+Organization CRUD: Create, Read, Update organizations.
+
+Field Validation: Ensure u_e_code is unique and numeric.
+
+Account Manager Mapping: Assign a manager_id from the account_managers table to each organization.
+
+Location Configuration: * Define location_type using the location_type_enum.
+
+Critical Toggle: A UI switch for requires_human_agent. If enabled, the system logic must bypass "Bot" agents for tickets originating from this location.
+
+1.2 Dimension & Lookup Table Control (The "Dictionary")
+To prevent "spelling chaos," the Admin Portal serves as the exclusive editor for lookup tables.
+
+Standardization Modules: Dedicated interfaces to manage:
+
+device_manufacturers & device_models (Parent-Child relationship).
+
+operating_systems & processor_architectures.
+
+ticket_statuses & ticket_priorities.
+
+Restriction: Delete operations must be restricted or "soft-deleted" if the ID is currently referenced in the devices or support_tickets tables.
+
+1.3 Agent & Multi-Agent Orchestration
+Agent Provisioning: Create agents and define agent_type (Bot vs. Human).
+
+Specialization Management: Assign tags to agents (e.g., "Cybersecurity," "Hardware") to influence the to_agent_id logic during escalations.
+
+Global Availability Monitor: A real-time dashboard showing which agents (Bots and Humans) are currently is_available.
+
+1.4 Global Asset Oversight
+Inventory View: A master list of all devices across all organizations.
+
+Status Monitoring: Filter devices by status (ONLINE/OFFLINE) and update_status_id.
+
+Audit Logs: View contact_devices history to see which user held which device and when.
+
+2. Technical Architecture (MERN + Postgres)
+Frontend (React): * State Management: Redux Toolkit or React Query for caching normalized lookup data (OS names, Statuses) to reduce redundant API calls.
+
+UI Framework: Tailwind CSS or Material UI for a professional "IT Dashboard" feel.
+
+Backend (Node.js/Express):
+
+ORM: Use Sequelize or TypeORM to interface with your PostgreSQL schema.
+
+Validation: Joi or Zod to enforce that inputs match the PostgreSQL constraints (e.g., INET for IP addresses).
+
+Database (PostgreSQL): * The primary source of truth. (Note: While "MERN" usually implies MongoDB, in a relational IT management system, PostgreSQL is utilized as the relational engine, while MongoDB can optionally be used for unstructured log storage).
+
+3. Detailed Interface Specifications (Admin)
+A. Dashboard Home
+KPI Cards: Total Open Tickets, Total Devices Offline, Active Bot vs. Human Ratio.
+
+High-Risk Alerts: List of locations where requires_human_agent is TRUE but no human agents are currently is_available.
+
+B. The "Metadata" Manager (Table View)
+Feature	UI Component	DB Interaction
+OS Manager	Editable Table	CRUD operating_systems
+Model Linker	Cascading Dropdown	Filter device_models by manufacturer_id
+Priority Rules	Drag-and-Drop List	Update ticket_priorities description/rank
+
+Export to Sheets
+
+4. Advanced Scenarios & Edge Cases
+Scenario: Deleting a Manufacturer: If an Admin attempts to delete a manufacturer that still has active models in the device_models table, the UI must block the action and display a "Dependency Error."
+
+Scenario: Multi-Tenant Switching: If the Admin is a "Regional Manager," the UI must filter all views (Devices, Tickets, Organizations) based on their assigned manager_id.
+
+Scenario: IP Validation: The device creation form must validate public_ip and gateway against INET format before sending to the backend.
+
+5. Security & Access Control
+Authentication: JWT (JSON Web Tokens) with a 1-hour expiration.
+
+RBAC (Role-Based Access Control): * Super-Admin: Full access to all organizations and lookups.
+
+Account Manager: Access only to the organizations linked to their manager_id.
+
+Next Step
+Would you like me to create the Database Migration scripts (Sequelize/Knex) for this schema, or should we move on to the Project Requirements for the Requester Portal?
